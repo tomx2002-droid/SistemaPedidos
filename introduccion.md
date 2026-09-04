@@ -1,0 +1,102 @@
+# Introducción al Diseño Orientado a Objetos
+#Definición del paradigma orientado a objetos
+El paradigma orientado a objetos es un modelo de programacion que tiene como base organizar el software alrededor de objetos, que a su vez son entidades que combinan datos y comportamientos. La programacion orientada a objetos busca moldear entidades del mundo real para resolver problemas  complejos de manera eficiente. 
+Los cuatro fundamentos del POO son: abstraccion, que consiste en extraer las caracteristicas y comportamientos mas importantes que requiere el programa, ignorando los detalles irrelevantes para para el contexto del sistema, encapsulamiento, que es el mecanismo que restringe el acceso directo a los atributos de un objeto, protegiendo asi su integridad, los datos internos se ocultan y solo se pueden acceder a ellos a traves de metodos publicos, herencia, que permite crear subclases a partir de una clase existente, donde la subclase hereda todos los atributos de la anterior clase, esto promueve la reutilizacion de codigo, y el polimorfismo, que autoriza que un mismo nombre de metodo se comporte de manera diferente segun el objeto que lo ejecute.
+
+
+## Cuaderno de NotebookLM 
+## Análisis de requerimientos
+
+### Problema actual
+
+Sabor Kiosco gestiona sus pedidos mediante comandas manuscritas que se trasladan físicamente desde el mostrador hasta la cocina. Este procedimiento provoca pérdida y deterioro de comandas, pedidos olvidados o preparados más de una vez, información incompleta, errores en los cobros y falta de certeza sobre el estado de cada pedido.
+
+La cocina y el mostrador no poseen una fuente de información compartida. Los cambios, las personalizaciones, las prioridades y los pagos se anotan manualmente, mientras que la preparación y la entrega se comunican de forma verbal. Esto genera demoras, confusiones y reclamos de los clientes.
+
+### Objetivo del MVP
+
+Desarrollar un sistema digital básico de pedidos que permita registrar y personalizar las órdenes, calcular sus importes, enviarlas automáticamente a cocina y controlar su avance hasta la entrega. El objetivo principal es evitar la pérdida y duplicación de pedidos y mantener sincronizados al mostrador y a la cocina.
+
+### Participantes del proceso
+
+- **Usuario de mostrador:** registra pedidos, personalizaciones y pagos.
+- **Personal de cocina:** consulta los pedidos recibidos y actualiza su estado durante la preparación.
+- **Encargado:** supervisa la operación y participa en decisiones como la prioridad o cancelación de pedidos.
+- **Dueño:** consulta el funcionamiento general del negocio.
+- **Cliente:** solicita, modifica, paga y retira el pedido, aunque no utiliza directamente el sistema durante el MVP.
+
+### Requisitos funcionales
+
+- **RF-01 - Registrar pedidos:** El sistema debe permitir registrar un pedido con uno o más ítems, indicando los productos o combos, sus cantidades, una fecha y hora de creación y un número correlativo generado automáticamente.  
+  **Fuentes:** 01 - Mail de Rubén; 02 - Reunión KickOff; 06 - Slack del proyecto; 10 - Planning del MVP.
+
+- **RF-02 - Personalizar ítems:** El sistema debe permitir registrar personalizaciones diferentes para cada ítem, incluyendo ingredientes que se quitan sin costo e ingredientes adicionales con recargo.  
+  **Fuentes:** 01 - Mail de Rubén; 02 - Reunión KickOff; 04 - Comandas; 07 - Reunión de análisis y diseño.
+
+- **RF-03 - Calcular el importe:** El sistema debe calcular automáticamente el subtotal de cada ítem y el total del pedido, contemplando cantidades, precios y recargos por personalizaciones. Además, debe conservar el precio que tenía cada producto al momento de realizarse el pedido.  
+  **Fuentes:** 02 - Reunión KickOff; 04 - Comandas; 07 - Reunión de análisis y diseño; 08 - Revisión técnica.
+
+- **RF-04 - Identificar pedidos para retiro:** El sistema debe asignar un número único al pedido y permitir ingresar un nombre o referencia de retiro, sin crear una ficha permanente del cliente.  
+  **Fuentes:** 09 - Audio de la encargada del turno noche; 10 - Planning del MVP.
+
+- **RF-05 - Registrar el pago:** El sistema debe permitir registrar el monto abonado y una forma de pago por pedido, limitada en el MVP a efectivo o transferencia.  
+  **Fuentes:** 04 - Comandas; 05 - Tablero de cocina; 07 - Reunión de análisis y diseño; 10 - Planning del MVP.
+
+- **RF-06 - Enviar pedidos a cocina:** El sistema debe enviar automáticamente a cocina los pedidos confirmados en el mostrador, evitando el traslado físico de comandas.  
+  **Fuentes:** 01 - Mail de Rubén; 02 - Reunión KickOff; 06 - Slack del proyecto; 10 - Planning del MVP.
+
+- **RF-07 - Gestionar estados:** El sistema debe mantener un único estado actual para cada pedido y permitir las transiciones controladas entre RECIBIDO, EN_PREPARACION, LISTO, ENTREGADO y CANCELADO. Debe impedir retrocesos o cambios de estado no permitidos.  
+  **Fuentes:** 05 - Tablero de cocina; 06 - Slack del proyecto; 07 - Reunión de análisis y diseño; 08 - Revisión técnica.
+
+- **RF-08 - Visualizar pedidos activos:** El sistema debe mostrar los pedidos activos organizados según su estado, de modo que el mostrador y la cocina consulten información compartida y actualizada.  
+  **Fuentes:** 01 - Mail de Rubén; 05 - Tablero de cocina; 06 - Slack del proyecto; 10 - Planning del MVP.
+
+- **RF-09 - Modificar pedidos recibidos:** El sistema debe permitir agregar, modificar o eliminar ítems y personalizaciones únicamente mientras el pedido se encuentre en estado RECIBIDO. La modificación debe conservar el número original y recalcular el total.  
+  **Fuentes:** 04 - Comandas; 08 - Revisión técnica; 10 - Planning del MVP.
+
+- **RF-10 - Registrar ajustes de pago:** Cuando se modifique un pedido previamente abonado, el sistema debe recalcular el total y permitir registrar la diferencia pendiente de cobro o ajuste.  
+  **Fuentes:** 04 - Comandas; 10 - Planning del MVP.
+
+- **RF-11 - Marcar prioridad manual:** El sistema debe permitir que un usuario marque manualmente un pedido como prioritario. La prioridad no debe asignarse mediante reglas automáticas.  
+  **Fuentes:** 04 - Comandas; 05 - Tablero de cocina; 06 - Slack del proyecto; 07 - Reunión de análisis y diseño.
+
+- **RF-12 - Cancelar sin eliminar:** El sistema debe permitir cancelar un pedido completo desde los estados autorizados, conservarlo registrado y asignarle el estado CANCELADO. Un pedido entregado no podrá cancelarse.  
+  **Fuentes:** 01 - Mail de Rubén; 02 - Reunión KickOff; 07 - Reunión de análisis y diseño; 08 - Revisión técnica; 10 - Planning del MVP.
+
+- **RF-13 - Registrar la entrega:** El sistema debe permitir identificar el pedido listo, entregarlo al cliente y registrar el cambio de estado a ENTREGADO.  
+  **Fuentes:** 01 - Mail de Rubén; 02 - Reunión KickOff; 10 - Planning del MVP.
+
+### Requisitos no funcionales
+
+- **RNF-01 - Facilidad de uso:** El sistema debe presentar una operación sencilla para que pueda ser utilizado por el personal del mostrador, cocina, encargados y dueño sin requerir conocimientos técnicos especializados.  
+  **Fuentes:** 01 - Mail de Rubén; 02 - Reunión KickOff.
+
+- **RNF-02 - Consistencia de la información:** El sistema debe mantener una única representación válida de cada pedido y de su estado, evitando duplicaciones y diferencias entre la información consultada por cocina y mostrador.  
+  **Fuentes:** 01 - Mail de Rubén; 05 - Tablero de cocina; 06 - Slack del proyecto; 08 - Revisión técnica.
+
+- **RNF-03 - Extensibilidad:** El sistema debe diseñarse de forma que pueda ampliarse posteriormente para incorporar nuevas funcionalidades y soportar una segunda sucursal, sin incluir la operación multilocal dentro del MVP.  
+  **Fuentes:** 01 - Mail de Rubén; 06 - Slack del proyecto.
+
+ - **RNF-04 - Rendimiento:** El sistema debe responder rápidamente al registrar, consultar o actualizar un pedido, para no generar demoras en la atención del mostrador ni en la preparación de la cocina.
+
+  **Fuentes:** 01 - Mail de Rubén; 02 - Reunión KickOff; 10 - Planning del MVP.
+
+- **RNF-05 - Persistencia de la información:** El sistema debe conservar los pedidos y sus estados aunque se cierre la aplicación o se reinicie el dispositivo, evitando la pérdida de información durante la jornada de trabajo.
+
+  **Fuentes:** 01 - Mail de Rubén; 06 - Slack del proyecto; 08 - Revisión técnica.
+
+### Funcionalidades excluidas del MVP
+
+Las siguientes funcionalidades se consideran posibles extensiones futuras, pero no forman parte de esta primera versión:
+
+- Integración automática de pedidos recibidos por WhatsApp.
+- Gestión de delivery propio y repartidores.
+- Control automático de stock e inventario de ingredientes.
+- Pagos mediante código QR, tarjetas o plataformas digitales.
+- Sistema de puntos, descuentos y fidelización de clientes.
+- Registro de fichas e historial de clientes.
+- Funcionamiento simultáneo en múltiples sucursales.
+- Pagos parciales o división de un pago entre distintos medios.
+- Cancelación parcial de ítems desde la interfaz del MVP.
+## Cuaderno de notebookLM 
+[Acceso al cuaderno compartido de Sabor kiosco](https://notebook.google.com/notebook/284538e1-f761-4a94-8ac6-e04aa08fd769)
